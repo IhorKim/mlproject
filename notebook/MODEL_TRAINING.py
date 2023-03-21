@@ -13,7 +13,6 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from catboost import CatBoostRegressor
 from xgboost import XGBRegressor
-import warnings
 
 df = pd.read_csv("data/students.csv")
 
@@ -21,15 +20,15 @@ df = pd.read_csv("data/students.csv")
 X = df.drop(columns=["math score"], axis=1)
 
 # exploring data for numerical and categorical features
-print("Categories in 'gender' variable: ", end=" " )
+print("Categories in 'gender' variable: ", end=" ")
 print(df['gender'].unique())
 print("Categories in 'race_ethnicity' variable: ", end=" ")
 print(df['race/ethnicity'].unique())
-print("Categories in 'parental level of education' variable: ", end=" " )
+print("Categories in 'parental level of education' variable: ", end=" ")
 print(df['parental level of education'].unique())
-print("Categories in 'lunch' variable: ", end=" " )
+print("Categories in 'lunch' variable: ", end=" ")
 print(df['lunch'].unique())
-print("Categories in 'test preparation course' variable:     ",end=" " )
+print("Categories in 'test preparation course' variable: ", end=" ")
 print(df['test preparation course'].unique())
 
 y = df["math score"]
@@ -55,6 +54,7 @@ print(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 X_train.shape, X_test.shape
 
+
 # create and evaluate function to give all metrics after model training
 def evaluate_model(true, predicted):
     mae = mean_absolute_error(true, predicted)
@@ -62,6 +62,7 @@ def evaluate_model(true, predicted):
     rmse = np.sqrt(mse)
     r2_square = r2_score(true, predicted)
     return mae, rmse, r2_square
+
 
 models = {
     "Linear Regression": LinearRegression(),
@@ -92,21 +93,22 @@ for i in range(len(list(models))):
     print(list(models.keys())[i])
     model_list.append(list(models.keys())[i])
 
-    print('Model performance for Training set')
+    print("Model performance for Training set")
     print(" Root Mean Squared Error: {:.4f}".format(model_train_rmse))
     print(" Mean Absolute Error: {:.4f}".format(model_train_mae))
     print(" R2 Score: {:.4f}".format(model_train_r2))
-    print('\n')
+    print("\n")
 
-    print('Model performance for Test set')
+    print("Model performance for Test set")
     print(" Root Mean Squared Error: {:.4f}".format(model_test_rmse))
     print(" Mean Absolute Error: {:.4f}".format(model_test_mae))
     print(" R2 Score: {:.4f}".format(model_test_r2))
     r2_list.append(model_test_r2)
-    print('\n')
+    print("\n")
 
 # show sorted results
-r2_score_results = pd.DataFrame(list(zip(model_list, r2_list)), columns=["Model name", "R2_score"]).sort_values(by=["R2_score"], ascending=False)
+r2_score_results = pd.DataFrame(list(zip(model_list, r2_list)), columns=["Model name", "R2_score"]).sort_values(
+    by=["R2_score"], ascending=False)
 print(r2_score_results)
 print('\n')
 
@@ -124,5 +126,5 @@ plt.ylabel("Predicted")
 plt.show()
 
 # difference between actual and predicted values
-pred_df = pd.DataFrame({"Actual value": y_test, "Predicted value": y_pred, "Difference": y_test-y_pred})
+pred_df = pd.DataFrame({"Actual value": y_test, "Predicted value": y_pred, "Difference": y_test - y_pred})
 print(pred_df)
