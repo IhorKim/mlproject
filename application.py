@@ -2,12 +2,10 @@ from flask import Flask, request, render_template
 from src.pipeline.predict_pipeline import CustomData, PredictPipeline
 
 application = Flask(__name__)
-
 app = application
 
 
-## Route for a home page
-
+# Route for a home page
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -30,7 +28,6 @@ def predict_datapoint():
         )
         pred_df = data.get_data_as_data_frame()
         print(pred_df)
-      
 
         predict_pipeline = PredictPipeline()
     
@@ -40,4 +37,5 @@ def predict_datapoint():
 
 
 if __name__ == "__main__":
+    # http://127.0.0.1:5000/predictdata
     app.run(host="0.0.0.0")
